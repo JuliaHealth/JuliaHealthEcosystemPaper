@@ -1,6 +1,13 @@
+% At the very top, before \documentclass
+\PassOptionsToPackage{colorlinks=true, linkcolor=blue, urlcolor=cyan, citecolor=green}{hyperref}
+
 % JuliaCon proceedings template
 \documentclass{juliacon}
 \setcounter{page}{1}
+
+\usepackage{enumitem}
+\usepackage{wrapfig}
+
 
 \begin{document}
 
@@ -32,8 +39,13 @@ We conclude by outlining future development goals and directions for community g
 
 \section{Introduction}
 
+\begin{wrapfigure}{l}{0.05\textwidth}
+  \centering
+  \includegraphics[width=0.075\textwidth]{juliahealth_logo_small.png}
+\end{wrapfigure}
+
 Founded in 2020, JuliaHealth was created to support the development and adoption of high-performance computing methods from the Julia ecosystem for biomedical and health research.
-The community's packages are developed under the \href{https://github.com/JuliaHealth}{JuliaHealth GitHub organization}.
+The community's packages are developed under the \href{https://github.com/JuliaHealth}{JuliaHealth GitHub organization} with additional community details at \href{https://juliahealth.org}{juliahealth.org}.
 Initially, JuliaHealth served as a coordination point for Julia community efforts related to the COVID-19 pandemic.
 Since then, JuliaHealth has continued to grow, bringing together dozens of active contributors across its GitHub repositories and a broader user community across Julia communication channels, and supporting research and professional activities across multiple venues \cite{zelko2025juliahealth, Zelko2023Julia}.
 As the community has expanded, several sub-communities have organically emerged within JuliaHealth to address different aspects of health research, each with distinct computational needs and levels of maturity.
@@ -45,11 +57,9 @@ The purpose of this paper is to describe these emerging ecosystems, their curren
 
 Biomedical and health research increasingly relies on computational workflows that must be open, reproducible, and efficient.
 However, the software ecosystem supporting these workflows remains fragmented across closed-source platforms and multiple programming languages.
-Researchers commonly combine tools written in MATLAB, Python, R, or C/C++, resulting in workflows that are difficult to integrate, reproduce, and maintain, particularly when performance-critical components are involved.
-
+Researchers commonly combine tools written in MATLAB, Python, R, or C/C++, resulting in workflows that are difficult to integrate, reproduce, and maintain, particularly when performance-critical components are involved. 
 Julia provides a suitable technical basis for addressing these challenges because it supports high-level scientific programming with performance approaching low-level languages, enabling researchers to prototype and deploy within a single language.
-When external tools are needed, Julia can also reuse established biomedical software through interoperability packages such as PythonCall.jl and RCall.jl.
-
+When external tools are needed, Julia can also reuse established biomedical software through interoperability packages such as PythonCall.jl \cite{PythonCall.jl} and RCall.jl \cite{randy_lai_2026_18422923}.
 JuliaHealth addresses the need for a community-maintained, open-source framework that spans multiple packages and can be composed into end-to-end workflows (e.g., simulation to analysis, or cohort definition to study execution) while remaining transparent and reproducible.
 By coordinating development within a shared organization, JuliaHealth lowers the cost of discovering, combining, and maintaining interoperable tools for health research.
 
@@ -68,15 +78,15 @@ The ecosystem spans physics simulations, data acquisition, and reconstruction to
 \subsubsection{Image Acquisition and Simulation}  
 
 The core package for medical imaging simulation in JuliaHealth is KomaMRI.jl \cite{castillo-passi_komamri_2023}, an open-source framework for general MRI simulation on CPUs and GPUs.
-It solves the Bloch equations with configurable numerical accuracy and provides a flexible environment for designing and optimizing MRI pulse sequences, including optional physiological motion models.
-KomaMRI.jl has already been used for cardiac sequence optimization at low magnetic field strengths \cite{castillo-passi_highly_2025}, synthetic dictionary generation for quantitative techniques, evaluation of hardware imperfections, and experimental imaging techniques for sensitively measuring oscillating magnetic currents in the brain.
+It solves the Bloch equations with configurable numerical accuracy and provides a flexible environment for designing and optimizing MRI pulse sequences, including optional physiological motion models. \cite{villacorta-aylagas_versatile_2025}
+KomaMRI.jl has already been used for cardiac sequence optimization at low magnetic field strengths \cite{castillo-passi_highly_2025, paredes_simultaneous_2025}, synthetic dictionary generation for quantitative techniques \cite{pedraza_cardiac_2025}, evaluation of hardware imperfections \cite{zhang_data_}, and experimental imaging techniques for sensitively measuring oscillating magnetic currents in the brain \cite{gregersen_increasing_}.
 Its high-performance simulation core enables fast and reproducible exploration of sequence behavior, motion effects, and hardware limitations before scanner implementation, making it a powerful tool for physics-based optimization and machine learning applications.
 
 \subsubsection{Image Processing, Segmentation and Interpretation}
 
 For post-acquisition methods, JuliaHealth includes a comprehensive suite of packages for image I/O, visualization, segmentation evaluation, and workflow orchestration.
-For example, MedPipe3D.jl orchestrates MedImages.jl, MedEye3D.jl, and MedEval3D.jl into a workflow for data visualization, inspection, annotation, segmentation, and evaluation of 3D/4D images and other volumetric biomedical data (e.g., MRI, CT, PET).
-Beyond orchestration, I/O packages such as DICOM.jl support reading and writing Digital Imaging and Communications in Medicine (DICOM) images, metadata parsing, anonymization, and conversion to numerical arrays.
+For example, MedPipe3D.jl \cite{Mitura2021} orchestrates \href{https://github.com/JuliaHealth/MedImages.jl}{MedImages.jl}, MedEye3D.jl, and MedEval3D.jl into a workflow for data visualization, inspection, annotation, segmentation, and evaluation of 3D/4D images and other volumetric biomedical data (e.g., MRI, CT, PET).
+Beyond orchestration, I/O packages such as \href{https://github.com/JuliaHealth/DICOM.jl}{DICOM.jl} support reading and writing Digital Imaging and Communications in Medicine (DICOM) images, metadata parsing, anonymization, and conversion to numerical arrays.
 Together, JuliaHealth offers a complete post-acquisition research environment that supports reproducible and scalable medical-imaging analysis and interpretation.
 Complementing imaging-focused workflows, JuliaHealth also supports population-level analyses through its observational health ecosystem.
 
@@ -84,17 +94,17 @@ Complementing imaging-focused workflows, JuliaHealth also supports population-le
 
 The JuliaHealth observational health ecosystem supports patient population analysis and phenotype definition management.
 It also provides interoperability with Observational Health Data Sciences and Informatics (OHDSI) tools, handling of Observational Medical Outcomes Partnership Common Data Model (OMOP CDM; a standardized relational schema for observational health data) databases, and study creation and maintenance.
-Packages like OMOPCDMCohortCreator.jl, OMOPCommonDataModel.jl, and OHDSIAPI.jl assist researchers in defining patient populations, managing OMOP CDM data, and integrating with external OHDSI tools.
-Furthermore, building on OMOP CDM databases, OMOPCDMPathways.jl maps and analyzes a patient's care continuum, while OMOPCDMFeasibility.jl characterizes patient cohorts based on phenotype definitions and statistical profiles across covariates of interest.
-Finally, HealthBase.jl provides templates for studies such as observational health studies and a common interface for packages to dispatch upon to bring unity to workflows across JuliaHealth.
+Packages like OMOPCDMCohortCreator.jl \cite{Zelko_OMOPCDMCohortCreator_0_2_0_2022}, \href{https://github.com/JuliaHealth/OMOPCommonDataModel.jl}{OMOPCommonDataModel.jl}, and \href{https://github.com/JuliaHealth/OHDSIAPI.jl}{OHDSIAPI.jl} assist researchers in defining patient populations, managing OMOP CDM data, and integrating with external OHDSI tools.
+Furthermore, building on OMOP CDM databases, OMOPCDMPathways.jl \cite{OMOPCDMPathways.jl} maps and analyzes a patient's care continuum, while \href{https://github.com/JuliaHealth/OMOPCDMFeasibility.jl}{OMOPCDMFeasibility.jl} characterizes patient cohorts based on phenotype definitions and statistical profiles across covariates of interest.
+Finally, \href{https://github.com/JuliaHealth/HealthBase.jl}{HealthBase.jl} provides templates for studies such as observational health studies and a common interface for packages to dispatch upon to bring unity to workflows across JuliaHealth.
 With these tools, JuliaHealth offers several options for conducting transparent, large-scale observational health analyses across institutions.
 
 \subsection{Other Developing Ecosystems}
 
 Beyond these two ecosystems, many parts of JuliaHealth are actively under development.
-For example, for simulation of biological and physiological processes, Thunderbolt.jl simulates cardiac electrophysiology and mechanics, and BloodFlowTrixi.jl can be used to explore hemodynamics.
+For example, for simulation of biological and physiological processes, Thunderbolt.jl simulates cardiac electrophysiology and mechanics, and BloodFlowTrixi.jl can be used to explore hemodynamics. \cite{mannes2024derivation, mannes2024derivationPhD, ersoy2024new}
 For interacting with third-party bioinformatics platforms, several API wrappers and specialized tools exist to bring relevant data or information from biomedical literature and chemical databases into one's workflow.
-These tools support programmatic retrieval and analysis via packages such as PubMedMiner.jl for accessing literature from PubMed/MEDLINE and PubChemMiner.jl for retrieving chemical structures and properties from PubChem.
+These tools support programmatic retrieval and analysis via packages such as \href{https://github.com/JuliaHealth/PubMedMiner.jl}{PubMedMiner.jl} for accessing literature from PubMed/MEDLINE and \href{https://github.com/JuliaHealth/PubChemCrawler.jl}{PubChemCrawler.jl} for retrieving chemical structures and properties from PubChem.
 As JuliaHealth continues to grow, these efforts in simulation modeling and integration with bioinformatics resources will help expand JuliaHealth into new ecosystems and further stages of development.
 
 \section{Discussion}
@@ -107,7 +117,7 @@ Here, we highlight strategic partnerships JuliaHealth has been leveraging across
 Through cultivation of Julia community relationships, JuliaHealth has been able to expand its capabilities and support trans-organizational efforts in developing novel applications across disciplines. 
 As a result, JuliaHealth has worked consistently with community organizations such as: 
 
-\begin{itemize}
+\begin{itemize}[label={\small\textbullet}, leftmargin=*, itemsep=4pt, labelsep=8pt]
     \item \href{https://github.com/BioJulia}{\textbf{BioJulia}} - Fast, open, extensible software for bioinformatics and computational biology.
     \item \href{https://github.com/JuliaEpi}{\textbf{JuliaEpi}} - Open research community to develop an epidemiological modeling ecosystem written in Julia.
     \item \href{https://github.com/JuliaImageRecon}{\textbf{JuliaImageRecon}} - General purpose image reconstruction and computational imaging packages.
@@ -121,21 +131,23 @@ As a result, JuliaHealth has worked consistently with community organizations su
 
 JuliaHealth also seeks to foster a safe and welcoming environment through multiple communication platforms and community mentoring.
 We accomplish these goals by providing and promoting:
-\begin{itemize}
-    \item monthly community meetings,
-    \item community programs such as Google Summer of Code (GSoC) and NumFOCUS-sponsored events,
-    \item discussion forums such as Julia Discourse, Julia Slack, and Julia Zulip,
-    \item package development and planning on code hosting platforms such as the JuliaHealth GitHub, and
-    \item the JuliaHealth blog to highlight ongoing work and community projects.
+
+\begin{itemize}[label={\small\textbullet}, leftmargin=*, itemsep=4pt, labelsep=8pt]
+    \item Monthly community meetings.
+    \item Community programs such as Google Summer of Code (GSoC) and NumFOCUS-sponsored events.
+    \item Discussion forums such as Julia Discourse, Julia Slack, and Julia Zulip.
+    \item Package development and planning on code hosting platforms such as the JuliaHealth GitHub.
+    \item The \href{https://juliahealth.org/JuliaHealthBlog/}{JuliaHealth blog} to highlight ongoing work and community projects.
 \end{itemize}
  
 \section{Future Community Development}
 
 As JuliaHealth continues to develop new tools and methodologies, some future areas of development are:
-\begin{itemize}
-    \item combining census microdata alongside observational health data to explore social determinants of health,
-    \item interactive community dashboards with custom JuliaHealth modules to host and present analysis results, and
-    \item exploratory use of generative AI and large language models to support health research analysis and tool development.
+
+\begin{itemize}[label={\small\textbullet}, leftmargin=*, itemsep=4pt, labelsep=8pt]
+    \item Combining census microdata alongside observational health data to explore social determinants of health,
+    \item Interactive community dashboards with custom JuliaHealth modules to host and present analysis results.
+    \item Exploratory use of generative AI and large language models to support health research analysis and tool development.
 \end{itemize}
 
 \section{Conclusion}
