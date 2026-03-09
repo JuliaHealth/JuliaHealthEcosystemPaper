@@ -1,21 +1,40 @@
-title: "My JuliaCon proceeding"
+title: "Bringing Julia to Health: A Concise Overview of JuliaHealth"
+
 keywords:
   - Julia
-  - Optimization
-  - Game theory
-  - Compiler
+  - health informatics
+  - medical imaging
+  - open source communities
 authors:
-  - name: 1st author
-    orcid: 0000-0003-1361-440X
+  - name: Jacob S. Zelko
+    orcid: 0000-0003-4531-1614
     affiliation: 1
-  - name: 2nd author
-    affiliation: 1, 2
-  - name: 3rd author
+  - name: Carlos Castillo-Passi
+    orcid: 0000-0001-6227-0477
     affiliation: 2
+  - name: Jakub Mitura
+    orcid: 0000-0003-1823-6823
+    affiliation: 3
+  - name: Divyansh Goyal
+    orcid: 0009-0000-2231-3030
+    affiliation: 4
+  - name: Kosuri Lakshmi Indu
+    affiliation: 5
+  - name: Jay Sanjay Landge
+    affiliation: 6
 affiliations:
-  - name: University
+  - name: CEPHIL, University of Saskatchewan
     index: 1
-  - name: National Lab
+  - name: Department of Radiology, Stanford University
     index: 2
-date: 24 April 2019
+  - name: University Clinic for Radiology and Nuclear Medicine, Otto-von-Guericke-Universität
+    index: 3
+  - name: Guru Gobind Singh Indraprastha University
+    index: 4
+  - name: BVRIT Hyderabad College of Engineering for Women
+    index: 5
+  - name: Indian Institute of Technology (IIT), Hyderabad
+    index: 6
+
 bibliography: ref.bib
+date: 7 March 2026
